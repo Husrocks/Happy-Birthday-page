@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes confetti {
+      0% {
+        transform: translateY(0) rotate(0);
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+      }
+    }
+
+    @keyframes fire {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+        background-color: yellow;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+        background-color: orange;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+        background-color: yellow;
+      }
+    }
+
+    @keyframes glitter {
+      0% {
+        opacity: 1;
+        transform: scale(1) translate(-50%, -50%);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.5) translate(-50%, -50%);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1) translate(-50%, -50%);
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--color);
+      animation: confetti 3s linear infinite;
+    }
+
+    .fire {
+      width: 10px;
+      height: 20px;
+      border-radius: 50% 50% 0 0;
+      animation: fire 0.5s infinite;
+      position: absolute;
+      top: -20px;
+    }
+
+    .glitter {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background-color: red;
+      border-radius: 50%;
+      animation: glitter 1s ease-out;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-pink-500 via-purple-500 to-blue-500 h-screen flex flex-col justify-center items-center overflow-hidden">
+  <div class="text-center text-white">
+    <h1 class="text-6xl font-bold animate-bounce">Happy Birthday🎉</h1>
+
+  </div>
+  
+  <!-- Birthday Cake Animation -->
+  <div class="relative mt-12">
+    <div class="w-20 h-20 bg-yellow-300 rounded-t-lg relative z-10"></div>
+    <div class="w-28 h-6 bg-yellow-500 mx-auto"></div>
+    <div class="absolute top-[-40px] left-[20px] flex justify-center items-end">
+      <div class="h-10 w-2 bg-red-600 relative">
+        <div class="fire"></div>
+      </div>
+    </div>
+    <div class="absolute top-[-40px] left-[40px] flex justify-center items-end">
+      <div class="h-10 w-2 bg-red-600 relative">
+        <div class="fire"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Confetti -->
+  <div id="confetti-container"></div>
+
+  <script>
+    // Generate confetti
+    const confettiContainer = document.getElementById("confetti-container");
+
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement("div");
+      confetti.classList.add("confetti");
+      confetti.style.left = Math.random() * 100 + "%";
+      confetti.style.animationDelay = Math.random() * 3 + "s";
+      confetti.style.setProperty('--color', `hsl(${Math.random() * 360}, 100%, 50%)`);
+      confettiContainer.appendChild(confetti);
+    }
+
+    // Flickering animation for candles
+    const styleSheet = document.styleSheets[0];
+    styleSheet.insertRule(`
+      @keyframes flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+    `, styleSheet.cssRules.length);
+    document.querySelectorAll(".animate-flicker").forEach(candle => {
+      candle.style.animation = "flicker 0.5s infinite";
+    });
+
+    // Generate glitter on mousemove
+    document.body.addEventListener("mousemove", (e) => {
+      const glitter = document.createElement("div");
+      glitter.classList.add("glitter");
+      glitter.style.left = e.clientX + "px";
+      glitter.style.top = e.clientY + "px";
+      document.body.appendChild(glitter);
+
+      // Remove glitter after animation ends
+      glitter.addEventListener("animationend", () => {
+        glitter.remove();
+      });
+    });
+  </script>
+</body>
+</html>
